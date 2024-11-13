@@ -102,8 +102,8 @@ jobs:
           ls -al
           tree ./
 
-      # ??
-      - name: Publish Test Report
+      # 테스트 실패한 부분 PR Code Review 에 주석 달기
+      - name: Add Failed Test Annotation to PR Code Review
         uses: mikepenz/action-junit-report@v5
         if: success() || failure()  # 앞에 step 이 fail 해도 실행
         with:
