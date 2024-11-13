@@ -10,4 +10,8 @@ class App1ApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void failOnPurpose() {
+        assert true == false;
+    }
 }
