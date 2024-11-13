@@ -1,3 +1,6 @@
+//file:noinspection GroovyAssignabilityCheck
+// warning 비활성화
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.5'
@@ -10,31 +13,36 @@ plugins {
     id 'jacoco'
 }
 
+// gradlew 에 sonar task 구성
 sonar {
     properties {
         property "sonar.projectKey", "jbw9964_ci-cd-testing"
         property "sonar.organization", "jbw9964-1"
         property "sonar.host.url", "https://sonarcloud.io"
-//        property "sonar.language", "java"
-//        property "sonar.sourceEncoding", "UTF-8"
-//        property "sonar.sources", "src/main/java"
-//        property "sonar.tests", "src/test/java"
+        property "sonar.language", "java"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java"
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
-//        property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.test.inclusions", "**/*Test.java"
         property "sonar.coverage.exclusions", "**/dto/**, **/event/**, **/*InitData*, **/*Application*, **/exception/**, **/service/alarm/**, **/aop/**, **/config/**, **/MemberRole*"
 
     }
 }
 
+// jacocoTestReport 구성
 jacocoTestReport {
-    dependsOn test
+    dependsOn test  // test 작업 실행 후 report 구성
+
+    // report 양식 enable
     reports {
-        // 원하는 리포트를 켜고 끌 수 있습니다.
         html.required = true
         xml.required = true
         csv.required = true
     }
 
+    // coverage 에 포함시키지 않을 항목들
+    // QueryDSL 로 만들어진거 나중에 포함해야 함
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, excludes: [
@@ -42,33 +50,40 @@ jacocoTestReport {
             ])
         }))
     }
+
+    // 여기서 exclude 시켜야 불필요한 항목들 coverage 분석 안함
+    // jacocoTestCoverageVerification 에서 exclude 하면
+    // verification 실패 항목에서만 배제하는 거
 }
 
 jacocoTestCoverageVerification {
-    dependsOn jacocoTestReport
-    // 이 커버리지 기준은 이 글의 맨 아래에서 다시 설명하겠습니다.
+    dependsOn jacocoTestReport  // jacocoTestReport 실행 후 verify
     violationRules {
         rule {
             element = 'CLASS'
 
+            // if-else 분기점 coverage
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
                 minimum = 0.80
             }
 
+            // 순수 line coverage
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
                 minimum = 0.80
             }
 
+            // method coverage
             limit {
                 counter = 'METHOD'
                 value = 'COVEREDRATIO'
                 minimum = 0.80
             }
 
+            // verification 에서 배제할 항목들
             excludes = [
                     "**.*Application*"
             ]
@@ -117,20 +132,6 @@ tasks.named('test') {
     // test 실행 후 jacocoTestReport 반드시 실행
     finalizedBy 'jacocoTestReport'
 }
-
-//task testCoverage(type: Test) {
-//    group 'verification'
-//    description 'Runs the unit tests with coverage'
-//
-//    dependsOn(
-//            ':test',
-//            ':jacocoTestReport',
-////            ':jacocoTestCoverageVerification'
-//    )
-//
-//    tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
-////    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
-//}
 
 // plain snapshot 생성 X
 jar {
