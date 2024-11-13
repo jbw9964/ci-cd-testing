@@ -26,6 +26,7 @@ jobs:
           java-version: '17'
           distribution: 'oracle'  # 그냥 Oracle JDK
 
+
       # gradle 캐시해서 빌드 시간 단축
       - name: Gradle caching
         uses: actions/cache@v4.1.2
@@ -38,49 +39,32 @@ jobs:
           restore-keys:
             ${{ runner.os }}-gradle-
 
-      # 우리 repo 디렉토리는 ~/ 아니라 그냥 ./ 임
-      - name: Show tree structure
-        run: |
-          echo 'App 1 : '
-          ls -al
-          tree App1 -a
-      #          echo 'App 2 : '
-      #          tree App2 -a
 
       # gradlew 실행 권한 부여
       - name: Grant Execute Permission For Gradlew
         run: |
-          chmod +x App1/gradlew
-      #          chmod +x App2/gradlew
+          cd App1
+          chmod +x ./gradlew
 
       # test 없이 그냥 build
       - name: Build with Gradle
         run: |
           cd App1
           ./gradlew build -x test
-      #          App2/gradlew build -x test
-
-      - name: Show tree structure
-        run: |
-          echo 'App 1 : '
-          tree App1 -a
-      #          echo 'App 2 : '
-      #          tree App2 -a
 
       # 테스트 실행
       - name: Run Tests
         run: |
           cd App1
           ./gradlew --info test
-      #          App2/gradlew --info test
 
-
-      - name: Show tree structure
+      # 우리 repo 디렉토리는 ~/ 아니라 그냥 ./ 임
+      - name: Show CWD Properties
         run: |
-          echo 'App 1 : '
-          tree App1 -a
-      #          echo 'App 2 : '
-      #          tree App2 -a
+          echo 'Current directory : $(pwd)'
+          ls -al
+          echo 'tree ./'
+          tree ./ -a
 
       # Pull Request 코멘트에 테스트 결과 댓글 달기
       - name: Publish Unit Test Results To PR Comment
@@ -107,6 +91,6 @@ jobs:
         uses: mikepenz/action-junit-report@v5
         if: success() || failure()  # 앞에 step 이 fail 해도 실행
         with:
-          report_paths: 'App1/build/test-results/test/*.xml'
+          report_paths: '**/build/test-results/test/*.xml'
           include_passed: true
           require_tests: true
