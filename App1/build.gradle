@@ -6,6 +6,9 @@ plugins {
 
     // sonar cloud 분석 위한 plugin
     id "org.sonarqube" version "5.1.0.4882"
+
+    // 테코 커버리지 분석
+    id 'jacoco'
 }
 
 sonar {
@@ -13,6 +16,14 @@ sonar {
         property "sonar.projectKey", "jbw9964_ci-cd-testing"
         property "sonar.organization", "jbw9964-1"
         property "sonar.host.url", "https://sonarcloud.io"
+//        property "sonar.language", "java"
+//        property "sonar.sourceEncoding", "UTF-8"
+//        property "sonar.sources", "src/main/java"
+//        property "sonar.tests", "src/test/java"
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/jacocoReport/test/jacocoTestReport.xml'
+//        property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.coverage.exclusions", "**/dto/**, **/event/**, **/*InitData*, **/*Application*, **/exception/**, **/service/alarm/**, **/aop/**, **/config/**, **/MemberRole*"
+
     }
 }
 
