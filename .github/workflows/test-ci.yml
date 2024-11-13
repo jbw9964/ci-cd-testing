@@ -1,0 +1,100 @@
+# Workflow 이름
+name: CI with Gradle
+
+# 트리거 이벤트
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+
+# 테스트 결과 작성을 위해 쓰기 권한 추가
+permissions: write-all
+
+# 실행
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # 실행 스텝
+    steps:
+
+      # workflow 가 repo 에 접근하기 위한 Marketplace action
+      - uses: actions/checkout@v4.2.2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4.5.0
+        with:
+          java-version: '17'
+          distribution: 'oracle'  # 그냥 Oracle JDK
+
+      # gradle 캐시해서 빌드 시간 단축
+      - name: Gradle caching
+        uses: actions/cache@v4.1.2
+        with:
+          # cache 저장할 폴더 설정
+          path: |
+            ~/App1/.gradle/caches
+          #            ~/App1/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys:
+            ${{ runner.os }}-gradle-
+
+      - name: Show tree structure
+        run: |
+          echo 'App 1 : '
+          tree ~/App1
+      #          echo 'App 2 : '
+      #          tree ~/App2
+
+      # gradlew 실행 권한 부여
+      - name: Grant Execute Permission For Gradlew
+        run: |
+          chmod +x ~/App1/gradlew
+      #          chmod +x ~/App2/gradlew
+
+      # test 없이 그냥 build
+      - name: Build with Gradle
+        run: |
+          ~/App1/gradlew build -x test
+      #          ~/App2/gradlew build -x test
+
+      - name: Show tree structure
+        run: |
+          echo 'App 1 : '
+          tree ~/App1
+      #          echo 'App 2 : '
+      #          tree ~/App2
+
+      # 테스트 실행
+      - name: Run Tests
+        run: |
+          ~/App1/gradlew --info test
+      #          ~/App2/gradlew --info test
+
+
+      - name: Show tree structure
+        run: |
+          echo 'App 1 : '
+          tree ~/App1
+      #          echo 'App 2 : '
+      #          tree ~/App2
+
+      # ??
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2.18.0
+        if: ${{ always() }}
+        with:
+          files: ~/**/build/test-results/**/*.xml
+
+      - name: Show tree structure
+        run: |
+          echo 'App 1 : '
+          tree ~/App1
+      #          echo 'App 2 : '
+      #          tree ~/App2
+
+      # ??
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: success() || failure()
+        with:
+          report_paths: '**/build/test-results/test/Test-*.xml'
