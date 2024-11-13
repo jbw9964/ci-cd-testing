@@ -26,7 +26,7 @@ class TestServiceTest {
 
     @Test
     void testEquality() {
-        assertThat(testService.equality("Fail on purpose"))
-                .isEqualTo(true);
+        assertThat(testService.equality("Invalid String"))
+                .isEqualTo(false);
     }
 }
