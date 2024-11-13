@@ -25,6 +25,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'oracle'  # 그냥 Oracle JDK
+      #          cache: 'gradle'
+      #          cache-dependency-path: |
+      #            App1/*.gradle*
+      #            App1/**/gradle-wrapper.properties
 
 
       # gradle 캐시해서 빌드 시간 단축
@@ -33,7 +37,8 @@ jobs:
         with:
           # cache 저장할 폴더 설정
           path: |
-            App1/.gradle/caches
+            ~/.gradle/caches
+            ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys:
             ${{ runner.os }}-gradle-
@@ -45,17 +50,20 @@ jobs:
           cd App1
           chmod +x ./gradlew
 
+
       # test 없이 그냥 build
       - name: Build with Gradle
         run: |
           cd App1
           ./gradlew build -x test --build-cache
 
+
       # 테스트 실행
       - name: Run Tests
         run: |
           cd App1
           ./gradlew --info test
+
 
       # 우리 repo 디렉토리는 ~/ 아니라 그냥 ./ 임
       - name: Show CWD Properties
