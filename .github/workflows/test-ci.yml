@@ -104,4 +104,5 @@ jobs:
           report_paths: '**/build/test-results/test/Test-*.xml'
           include_passed: true
           require_tests: true
+          token: : ${{ github.token }}
 
