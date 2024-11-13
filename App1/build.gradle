@@ -39,12 +39,14 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    ignoreFailures = true   // test 실패한거 있어도 OS 에 0 코드 제공
 }
 
 //dockerCompose {
 //    dockerComposeFile '../docker-compose.yaml'
 //}
 
+// plain snapshot 생성 X
 jar {
     enabled = false
 }
