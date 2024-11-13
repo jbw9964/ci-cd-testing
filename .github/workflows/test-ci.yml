@@ -4,7 +4,7 @@ name: CI with Gradle
 # 트리거 이벤트
 on:
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main", "master", "develop", "release" ]
 
 # 테스트 결과 작성을 위해 쓰기 권한 추가
 permissions: write-all
@@ -61,7 +61,7 @@ jobs:
       # 우리 repo 디렉토리는 ~/ 아니라 그냥 ./ 임
       - name: Show CWD Properties
         run: |
-          echo 'Current directory : $(pwd)'
+          echo "Current directory : `pwd`"
           ls -al
           echo 'tree ./'
           tree ./ -a
@@ -73,24 +73,12 @@ jobs:
         with:
           files: App1/build/test-results/**/*.xml
 
-      - name: Show tree structure
-        run: |
-          echo 'App 1 : '
-          tree App1 -a
-      #          echo 'App 2 : '
-      #          tree App2 -a
-
-      - name: show pwd and ls
-        run: |
-          pwd
-          ls -al
-          tree ./
 
       # 테스트 실패한 부분 PR Code Review 에 주석 달기
       - name: Add Failed Test Annotation to PR Code Review
         uses: mikepenz/action-junit-report@v5
         if: success() || failure()  # 앞에 step 이 fail 해도 실행
         with:
+          # test report 위치
           report_paths: '**/build/test-results/test/*.xml'
-          include_passed: true
           require_tests: true
