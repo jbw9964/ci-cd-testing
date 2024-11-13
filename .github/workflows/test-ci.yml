@@ -41,7 +41,7 @@ jobs:
       - name: Show tree structure
         run: |
           echo 'App 1 : '
-          ll
+          ls -al
           tree ~/App1
       #          echo 'App 2 : '
       #          tree ~/App2
