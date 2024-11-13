@@ -6,15 +6,15 @@ import org.springframework.stereotype.*;
 @Service
 public class TestService {
 
-    public static String HELLO_WORLD = "Hello World";
-    public static int RAND_INT = new Random().nextInt();
+    public static final String HELLO_WORLD = "Hello World";
+    public static final Random RAND = new Random();
 
     public String getHelloWorld() {
         return HELLO_WORLD;
     }
 
     public int getRandInt() {
-        return RAND_INT;
+        return RAND.nextInt();
     }
 
     public boolean equality(String given) {

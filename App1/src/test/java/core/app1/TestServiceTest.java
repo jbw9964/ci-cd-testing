@@ -21,7 +21,7 @@ class TestServiceTest {
     @Test
     void getRandInt() {
         assertThat(testService.getRandInt())
-                .isEqualTo(TestService.RAND_INT);
+                .isNotEqualTo(TestService.RAND.nextInt());
     }
 
     @Test
