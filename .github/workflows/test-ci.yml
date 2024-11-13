@@ -104,9 +104,12 @@ jobs:
 
       # ??
       - name: Publish Test Report
+        run: |
+          cd App1
+
         uses: mikepenz/action-junit-report@v5
         if: success() || failure()  # 앞에 step 이 fail 해도 실행
         with:
-          report_paths: '**/**/build/test-results/test/Test-*.xml'
+          report_paths: 'build/test-results/test/Test-*.xml'
           include_passed: true
           require_tests: true
