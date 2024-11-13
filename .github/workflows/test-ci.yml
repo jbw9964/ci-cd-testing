@@ -56,7 +56,8 @@ jobs:
       # test 없이 그냥 build
       - name: Build with Gradle
         run: |
-          App1/gradlew build -x test
+          cd App1
+          ./gradlew build -x test
       #          App2/gradlew build -x test
 
       - name: Show tree structure
