@@ -32,52 +32,53 @@ jobs:
         with:
           # cache 저장할 폴더 설정
           path: |
-            ~/App1/.gradle/caches
-          #            ~/App1/.gradle/wrapper
+            App1/.gradle/caches
+          #            App1/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys:
             ${{ runner.os }}-gradle-
 
+      # 우리 repo 디렉토리는 ~/ 아니라 그냥 ./ 임
       - name: Show tree structure
         run: |
           echo 'App 1 : '
           ls -al
-          tree ~/App1
+          tree App1
       #          echo 'App 2 : '
-      #          tree ~/App2
+      #          tree App2
 
       # gradlew 실행 권한 부여
       - name: Grant Execute Permission For Gradlew
         run: |
-          chmod +x ~/App1/gradlew
-      #          chmod +x ~/App2/gradlew
+          chmod +x App1/gradlew
+      #          chmod +x App2/gradlew
 
       # test 없이 그냥 build
       - name: Build with Gradle
         run: |
-          ~/App1/gradlew build -x test
-      #          ~/App2/gradlew build -x test
+          App1/gradlew build -x test
+      #          App2/gradlew build -x test
 
       - name: Show tree structure
         run: |
           echo 'App 1 : '
-          tree ~/App1
+          tree App1
       #          echo 'App 2 : '
-      #          tree ~/App2
+      #          tree App2
 
       # 테스트 실행
       - name: Run Tests
         run: |
-          ~/App1/gradlew --info test
-      #          ~/App2/gradlew --info test
+          App1/gradlew --info test
+      #          App2/gradlew --info test
 
 
       - name: Show tree structure
         run: |
           echo 'App 1 : '
-          tree ~/App1
+          tree App1
       #          echo 'App 2 : '
-      #          tree ~/App2
+      #          tree App2
 
       # ??
       - name: Publish Unit Test Results
@@ -89,9 +90,9 @@ jobs:
       - name: Show tree structure
         run: |
           echo 'App 1 : '
-          tree ~/App1
+          tree App1
       #          echo 'App 2 : '
-      #          tree ~/App2
+      #          tree App2
 
       # ??
       - name: Publish Test Report
