@@ -85,7 +85,7 @@ jobs:
       # ??
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2.18.0
-        if: ${{ always() }}
+        if: ${{ always() }}   # 앞에 step 이 fail 해도 실행
         with:
           files: App1/build/test-results/**/*.xml
 
