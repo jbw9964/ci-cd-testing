@@ -43,9 +43,9 @@ jobs:
         run: |
           echo 'App 1 : '
           ls -al
-          tree App1
+          tree App1 -a
       #          echo 'App 2 : '
-      #          tree App2
+      #          tree App2 -a
 
       # gradlew 실행 권한 부여
       - name: Grant Execute Permission For Gradlew
@@ -63,23 +63,24 @@ jobs:
       - name: Show tree structure
         run: |
           echo 'App 1 : '
-          tree App1
+          tree App1 -a
       #          echo 'App 2 : '
-      #          tree App2
+      #          tree App2 -a
 
       # 테스트 실행
       - name: Run Tests
         run: |
-          App1/gradlew --info test
+          cd App1
+          ./gradlew --info test
       #          App2/gradlew --info test
 
 
       - name: Show tree structure
         run: |
           echo 'App 1 : '
-          tree App1
+          tree App1 -a
       #          echo 'App 2 : '
-      #          tree App2
+      #          tree App2 -a
 
       # ??
       - name: Publish Unit Test Results
@@ -91,9 +92,9 @@ jobs:
       - name: Show tree structure
         run: |
           echo 'App 1 : '
-          tree App1
+          tree App1 -a
       #          echo 'App 2 : '
-      #          tree App2
+      #          tree App2 -a
 
       # ??
       - name: Publish Test Report
