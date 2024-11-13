@@ -102,3 +102,6 @@ jobs:
         if: success() || failure()  # 앞에 step 이 fail 해도 실행
         with:
           report_paths: '**/build/test-results/test/Test-*.xml'
+          include_passed: true
+          require_tests: true
+
