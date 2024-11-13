@@ -96,6 +96,12 @@ jobs:
       #          echo 'App 2 : '
       #          tree App2 -a
 
+      - name: show pwd and ls
+        run: |
+          pwd
+          ls -al
+          tree ./
+
       # ??
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v5
