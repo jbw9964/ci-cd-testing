@@ -27,17 +27,17 @@ jobs:
           distribution: 'oracle'  # 그냥 Oracle JDK
 
 
-      # gradle 캐시해서 빌드 시간 단축
-      - name: Gradle caching
-        uses: actions/cache@v4.1.2
-        with:
-          # cache 저장할 폴더 설정
-          path: |
-            App1/.gradle/caches
-          #            App1/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys:
-            ${{ runner.os }}-gradle-
+      #      # gradle 캐시해서 빌드 시간 단축
+      #      - name: Gradle caching
+      #        uses: actions/cache@v4.1.2
+      #        with:
+      #          # cache 저장할 폴더 설정
+      #          path: |
+      #            App1/.gradle/caches
+      #          #            App1/.gradle/wrapper
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+      #          restore-keys:
+      #            ${{ runner.os }}-gradle-
 
 
       # gradlew 실행 권한 부여
